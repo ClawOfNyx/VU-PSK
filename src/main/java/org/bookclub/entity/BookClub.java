@@ -1,6 +1,7 @@
 package org.bookclub.entity;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.util.List;
 
