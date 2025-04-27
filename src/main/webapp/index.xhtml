@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Book Club Management System</title>
+    <h:outputStylesheet>
+        .ui-datatable .ui-datatable-header {
+            text-align: right !important;
+        }
+        .menu-container {
+            margin-bottom: 20px;
+        }
+    </h:outputStylesheet>
+</h:head>
+<h:body>
+    <div class="card">
+        <h2>Book Club Management System</h2>
+
+        <!-- Navigation Menu -->
+        <div class="menu-container">
+            <p:menubar>
+                <p:menuitem value="Readers" url="index.xhtml" icon="pi pi-user"/>
+                <p:menuitem value="Book Clubs" url="bookclubs.xhtml" icon="pi pi-users"/>
+                <p:menuitem value="Books" url="books.xhtml" icon="pi pi-book"/>
+            </p:menubar>
+        </div>
+
+        <p:tabView>
+            <p:tab title="Readers">
+                <h:form id="readerForm">
+                    <p:panel header="Reader Management">
+                        <p:messages id="messages" showDetail="true" closable="true">
+                            <p:autoUpdate/>
+                        </p:messages>
+
+                        <div class="ui-fluid p-formgrid p-grid">
+                            <div class="p-field p-col-12 p-md-4">
+                                <p:outputLabel for="firstName" value="First Name"/>
+                                <p:inputText id="firstName" value="#{readerBean.newReader.firstName}" required="true"/>
+                            </div>
+
+                            <div class="p-field p-col-12 p-md-4">
+                                <p:outputLabel for="lastName" value="Last Name"/>
+                                <p:inputText id="lastName" value="#{readerBean.newReader.lastName}" required="true"/>
+                            </div>
+
+                            <div class="p-field p-col-12 p-md-4">
+                                <p:outputLabel for="email" value="Email"/>
+                                <p:inputText id="email" value="#{readerBean.newReader.email}" required="true"/>
+                            </div>
+
+                            <!-- Add Book Club selection for new readers -->
+                            <div class="p-field p-col-12 p-md-4">
+                                <p:outputLabel for="bookClub" value="Book Club"/>
+                                <p:selectOneMenu id="bookClub" value="#{readerBean.newReaderBookClubId}">
+                                    <f:selectItem itemLabel="Select Book Club" itemValue="#{null}" />
+                                    <f:selectItems value="#{readerBean.availableBookClubs}" var="club"
+                                                   itemLabel="#{club.name}" itemValue="#{club.id}" />
+                                </p:selectOneMenu>
+                            </div>
+                        </div>
+
+                        <p:commandButton value="Save Reader" action="#{readerBean.saveReader()}"
+                                         update="readerTable readerForm" style="margin-top: 10px"/>
+
+                        <p:outputPanel id="dataAccessInfo" style="margin-top: 10px">
+                            <p:outputLabel value="Current data access method: " />
+                            <p:outputLabel value="#{readerBean.dataAccessType}" style="font-weight: bold; color: #{readerBean.useJpa ? 'green' : 'blue'}" />
+                        </p:outputPanel>
+                    </p:panel>
+
+                    <p:dataTable id="readerTable" value="#{readerBean.readers}" var="reader"
+                                 emptyMessage="No readers found" rowKey="#{reader.id}"
+                                 selection="#{readerBean.selectedReader}" selectionMode="single"
+                                 style="margin-top: 20px">
+                        <f:facet name="header">
+                            Readers List
+                        </f:facet>
+
+                        <p:ajax event="rowSelect" update="@form"/>
+
+                        <p:column headerText="ID">
+                            <h:outputText value="#{reader.id}" />
+                        </p:column>
+
+                        <p:column headerText="First Name">
+                            <h:outputText value="#{reader.firstName}" />
+                        </p:column>
+
+                        <p:column headerText="Last Name">
+                            <h:outputText value="#{reader.lastName}" />
+                        </p:column>
+
+                        <p:column headerText="Email">
+                            <h:outputText value="#{reader.email}" />
+                        </p:column>
+
+                        <p:column headerText="Books">
+                            <p:dataList value="#{reader.books}" var="book" type="ordered"
+                                        emptyMessage="No books assigned">
+                                #{book.title}
+                            </p:dataList>
+                        </p:column>
+
+                        <p:column headerText="Book Club">
+                            <h:outputText value="#{reader.bookClub.name}"
+                                          rendered="#{reader.bookClub != null}"/>
+                            <h:outputText value="Not assigned" rendered="#{reader.bookClub == null}"/>
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:panel id="assignmentPanel" header="Assign Reader to Book Club and Books"
+                             rendered="#{readerBean.selectedReader != null}"
+                             style="margin-top: 20px">
+
+                        <p:panelGrid columns="3" styleClass="ui-noborder">
+                            <h:outputText value="Selected Reader:" />
+                            <h:outputText value="#{readerBean.selectedReader.firstName} #{readerBean.selectedReader.lastName}"
+                                          style="font-weight: bold"/>
+                            <h:outputText value="" />
+
+                            <h:outputText value="Assign to Book Club:" />
+                            <p:selectOneMenu id="bookClubMenu" value="#{readerBean.selectedBookClubId}">
+                                <f:selectItem itemLabel="Select Book Club" itemValue="#{null}" />
+                                <f:selectItems value="#{readerBean.availableBookClubs}" var="club"
+                                               itemLabel="#{club.name}" itemValue="#{club.id}" />
+                                <p:ajax event="change" update="assignBookClubBtn" />
+                            </p:selectOneMenu>
+                            <p:commandButton id="assignBookClubBtn" value="Assign to Book Club"
+                                             action="#{readerBean.addReaderToBookClub()}"
+                                             update="readerTable assignmentPanel messages"
+                                             process="bookClubMenu @this"
+                                             disabled="#{readerBean.selectedBookClubId == null}"/>
+
+                            <h:outputText value="Assign Book:" />
+                            <p:selectOneMenu id="bookMenu" value="#{readerBean.selectedBookId}">
+                                <f:selectItem itemLabel="Select Book" itemValue="#{null}" />
+                                <f:selectItems value="#{readerBean.availableBooks}" var="book"
+                                               itemLabel="#{book.title}" itemValue="#{book.id}" />
+                                <p:ajax event="change" update="assignBookBtn" />
+                            </p:selectOneMenu>
+                            <p:commandButton id="assignBookBtn" value="Assign Book"
+                                             action="#{readerBean.addReaderToBook()}"
+                                             update="readerTable assignmentPanel messages"
+                                             process="bookMenu @this"
+                                             disabled="#{readerBean.selectedBookId == null}"/>
+                        </p:panelGrid>
+
+                        <p:outputPanel style="margin-top: 10px">
+                            <h:outputText value="Selected Book Club ID: #{readerBean.selectedBookClubId}" />
+                            <br/>
+                            <h:outputText value="Selected Book ID: #{readerBean.selectedBookId}" />
+                        </p:outputPanel>
+                    </p:panel>
+                </h:form>
+            </p:tab>
+
+            <p:tab title="CDI Demo">
+                <h:form id="cdiForm">
+                    <p:panel header="CDI Lifecycle">
+                        <h3>Component Lifecycle Examples</h3>
+
+                        <p:panelGrid columns="2" styleClass="ui-noborder">
+                            <h:outputText value="Generated Name:" style="font-weight:bold"/>
+                            <h:outputText value="#{nameGeneratorComponent.generateName()}" />
+
+                            <h:outputText value="RequestScoped Component Info:" style="font-weight:bold"/>
+                            <h:outputText value="#{nameGeneratorComponent.componentInfo}" style="color: blue;"/>
+
+                            <h:outputText value="ApplicationScoped Service Info:" style="font-weight:bold"/>
+                            <h:outputText value="#{nameGeneratorComponent.randomizerInfo}" style="color: green;"/>
+                        </p:panelGrid>
+
+                        <p:commandButton value="Refresh Page (New Request)" action="index?faces-redirect=true"
+                                         style="margin-top: 10px"/>
+                    </p:panel>
+                </h:form>
+            </p:tab>
+        </p:tabView>
+    </div>
+</h:body>
+</html>

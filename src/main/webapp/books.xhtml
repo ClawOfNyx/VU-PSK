@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Books Management</title>
+    <h:outputStylesheet>
+        .menu-container {
+            margin-bottom: 20px;
+        }
+    </h:outputStylesheet>
+</h:head>
+<h:body>
+    <div class="card">
+        <h2>Books Management</h2>
+
+        <!-- Navigation Menu -->
+        <div class="menu-container">
+            <p:menubar>
+                <p:menuitem value="Readers" url="readers.xhtml" icon="pi pi-user"/>
+                <p:menuitem value="Book Clubs" url="bookclubs.xhtml" icon="pi pi-users"/>
+                <p:menuitem value="Books" url="books.xhtml" icon="pi pi-book"/>
+            </p:menubar>
+        </div>
+
+        <h:form id="bookForm">
+            <p:panel header="Add New Book">
+                <p:messages id="messages" showDetail="true" closable="true">
+                    <p:autoUpdate/>
+                </p:messages>
+
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="title" value="Book Title"/>
+                        <p:inputText id="title" value="#{bookBean.newBook.title}" required="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="isbn" value="ISBN"/>
+                        <p:inputText id="isbn" value="#{bookBean.newBook.isbn}" required="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-4">
+                        <p:outputLabel for="pages" value="Pages"/>
+                        <p:inputNumber id="pages" value="#{bookBean.newBook.pages}" required="true"
+                                       minValue="1" maxValue="5000"/>
+                    </div>
+                </div>
+
+                <p:commandButton value="Save Book" action="#{bookBean.saveBook()}"
+                                 update="bookForm :bookDataForm:booksTable" style="margin-top: 10px"/>
+
+                <p:outputPanel id="dataAccessInfo" style="margin-top: 10px">
+                    <p:outputLabel value="Current data access method: " />
+                    <p:outputLabel value="#{bookBean.dataAccessType}" style="font-weight: bold; color: #{bookBean.useJpa ? 'green' : 'blue'}" />
+                </p:outputPanel>
+            </p:panel>
+        </h:form>
+
+        <!-- List of Books -->
+        <h:form id="bookDataForm">
+            <p:dataTable id="booksTable" value="#{bookBean.books}" var="book"
+                         emptyMessage="No books found" style="margin-top: 20px"
+                         selection="#{bookBean.selectedBook}" selectionMode="single"
+                         rowKey="#{book.id}">
+
+                <p:ajax event="rowSelect" listener="#{bookBean.selectBook}"
+                        update=":bookDataForm:readersTable :bookDataForm:bookDebug"
+                        process="@this"/>
+
+                <f:facet name="header">
+                    Books List
+                </f:facet>
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{book.id}" />
+                </p:column>
+
+                <p:column headerText="Title">
+                    <h:outputText value="#{book.title}" />
+                </p:column>
+
+                <p:column headerText="ISBN">
+                    <h:outputText value="#{book.isbn}" />
+                </p:column>
+
+                <p:column headerText="Pages">
+                    <h:outputText value="#{book.pages}" />
+                </p:column>
+
+                <p:column headerText="Readers Count">
+                    <h:outputText value="#{book.readers.size()}" />
+                </p:column>
+            </p:dataTable>
+
+            <!-- Debug panel -->
+            <p:outputPanel id="bookDebug">
+                <p:panel rendered="#{bookBean.selectedBook != null}" header="Debug Info" toggleable="true" collapsed="true">
+                    <h:outputText value="Selected Book: #{bookBean.selectedBook.title}" /><br/>
+                    <h:outputText value="Reader Count: #{bookBean.selectedBook.readers.size()}" />
+                </p:panel>
+            </p:outputPanel>
+
+            <!-- Book Readers -->
+            <p:dataTable id="readersTable" value="#{bookBean.selectedBook.readers}" var="reader"
+                         emptyMessage="No readers for this book or no book selected"
+                         style="margin-top: 20px">
+
+                <f:facet name="header">
+                    Book Readers
+                </f:facet>
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{reader.id}" />
+                </p:column>
+
+                <p:column headerText="Full Name">
+                    <h:outputText value="#{reader.fullName}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </div>
+</h:body>
+</html>

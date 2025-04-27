@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Book Clubs Management</title>
+    <h:outputStylesheet>
+        .menu-container {
+            margin-bottom: 20px;
+        }
+    </h:outputStylesheet>
+</h:head>
+<h:body>
+    <div class="card">
+        <h2>Book Clubs Management</h2>
+
+        <!-- Navigation Menu -->
+        <div class="menu-container">
+            <p:menubar>
+                <p:menuitem value="Readers" url="readers.xhtml" icon="pi pi-user"/>
+                <p:menuitem value="Books" url="books.xhtml" icon="pi pi-book"/>
+                <p:menuitem value="Book Clubs" url="bookclubs.xhtml" icon="pi pi-users"/>
+            </p:menubar>
+        </div>
+
+        <h:form id="bookClubForm">
+            <p:panel header="Add New Book Club">
+                <p:messages id="messages" showDetail="true" closable="true">
+                    <p:autoUpdate/>
+                </p:messages>
+
+                <div class="ui-fluid p-formgrid p-grid">
+                    <div class="p-field p-col-12 p-md-6">
+                        <p:outputLabel for="name" value="Book Club Name"/>
+                        <p:inputText id="name" value="#{bookClubBean.newBookClub.name}" required="true"/>
+                    </div>
+
+                    <div class="p-field p-col-12 p-md-6">
+                        <p:outputLabel for="description" value="Description"/>
+                        <p:inputTextarea id="description" value="#{bookClubBean.newBookClub.description}"/>
+                    </div>
+                </div>
+
+                <p:commandButton value="Save Book Club" action="#{bookClubBean.saveBookClub()}"
+                                 update="bookClubForm :bookClubDataForm:bookClubsTable" style="margin-top: 10px"/>
+
+                <p:outputPanel id="dataAccessInfo" style="margin-top: 10px">
+                    <p:outputLabel value="Current data access method: " />
+                    <p:outputLabel value="#{bookClubBean.dataAccessType}" style="font-weight: bold; color: #{bookClubBean.useJpa ? 'green' : 'blue'}" />
+                </p:outputPanel>
+            </p:panel>
+        </h:form>
+
+        <!-- List of Book Clubs -->
+        <h:form id="bookClubDataForm">
+            <p:dataTable id="bookClubsTable" value="#{bookClubBean.bookClubs}" var="bookClub"
+                         emptyMessage="No book clubs found" style="margin-top: 20px"
+                         selection="#{bookClubBean.selectedBookClub}" selectionMode="single"
+                         rowKey="#{bookClub.id}">
+
+                <p:ajax event="rowSelect" listener="#{bookClubBean.selectBookClub}"
+                        update=":bookClubDataForm:readersTable :bookClubDataForm:bookClubDebug"
+                        process="@this"/>
+
+                <f:facet name="header">
+                    Book Clubs List
+                </f:facet>
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{bookClub.id}" />
+                </p:column>
+
+                <p:column headerText="Name">
+                    <h:outputText value="#{bookClub.name}" />
+                </p:column>
+
+                <p:column headerText="Description">
+                    <h:outputText value="#{bookClub.description}" />
+                </p:column>
+
+                <p:column headerText="Readers Count">
+                    <h:outputText value="#{bookClub.readers.size()}" />
+                </p:column>
+            </p:dataTable>
+
+            <!-- Debug panel -->
+            <p:outputPanel id="bookClubDebug">
+                <p:panel rendered="#{bookClubBean.selectedBookClub != null}" header="Debug Info" toggleable="true" collapsed="true">
+                    <h:outputText value="Selected Book Club: #{bookClubBean.selectedBookClub.name}" /><br/>
+                    <h:outputText value="Reader Count: #{bookClubBean.selectedBookClub.readers.size()}" />
+                </p:panel>
+            </p:outputPanel>
+
+            <!-- Book Club Readers -->
+            <p:dataTable id="readersTable" value="#{bookClubBean.selectedBookClub.readers}" var="reader"
+                         emptyMessage="No readers in this club or no club selected"
+                         style="margin-top: 20px">
+
+                <f:facet name="header">
+                    Book Club Readers
+                </f:facet>
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{reader.id}" />
+                </p:column>
+
+                <p:column headerText="Full Name">
+                    <h:outputText value="#{reader.fullName}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </div>
+</h:body>
+</html>

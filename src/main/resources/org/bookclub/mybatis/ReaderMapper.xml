@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.bookclub.mybatis.ReaderMapper">
+
+    <resultMap id="ReaderMap" type="org.bookclub.entity.Reader">
+        <id property="id" column="id"/>
+        <result property="fullName" column="full_name"/>
+        <association property="bookClub" javaType="org.bookclub.entity.BookClub">
+            <id property="id" column="book_club_id"/>
+            <result property="name" column="book_club_name"/>
+        </association>
+        <collection property="books" ofType="org.bookclub.entity.Book">
+            <id property="id" column="book_id"/>
+            <result property="title" column="book_title"/>
+            <result property="author" column="book_author"/>
+        </collection>
+    </resultMap>
+
+    <select id="findAll" resultMap="ReaderMap">
+        SELECT
+            r.id, r.full_name,
+            bc.id AS book_club_id, bc.name AS book_club_name,
+            b.id AS book_id, b.title AS book_title, b.author AS book_author
+        FROM reader r
+                 LEFT JOIN book_club bc ON r.book_club_id = bc.id
+                 LEFT JOIN reader_books rb ON r.id = rb.reader_id
+                 LEFT JOIN book b ON rb.book_id = b.id
+    </select>
+
+    <select id="findById" resultMap="ReaderMap" parameterType="long">
+        SELECT
+            r.id, r.full_name,
+            bc.id AS book_club_id, bc.name AS book_club_name,
+            b.id AS book_id, b.title AS book_title, b.author AS book_author
+        FROM reader r
+                 LEFT JOIN book_club bc ON r.book_club_id = bc.id
+                 LEFT JOIN reader_books rb ON r.id = rb.reader_id
+                 LEFT JOIN book b ON rb.book_id = b.id
+        WHERE r.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="org.bookclub.entity.Reader" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO reader (full_name, book_club_id)
+        VALUES (#{fullName},
+        <if test="bookClub != null">#{bookClub.id}</if>
+        <if test="bookClub == null">null</if>)
+    </insert>
+
+    <insert id="addReaderToBook">
+        INSERT INTO reader_books (reader_id, book_id)
+        VALUES (#{readerId}, #{bookId})
+    </insert>
+
+    <update id="updateBookClub">
+        UPDATE reader
+        SET book_club_id = #{bookClubId}
+        WHERE id = #{readerId}
+    </update>
+
+</mapper>

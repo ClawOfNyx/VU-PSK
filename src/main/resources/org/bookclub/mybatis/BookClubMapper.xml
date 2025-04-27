@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.bookclub.mybatis.BookClubMapper">
+
+    <resultMap id="BookClubMap" type="org.bookclub.entity.BookClub">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <collection property="readers" ofType="org.bookclub.entity.Reader">
+            <id property="id" column="reader_id"/>
+            <result property="fullName" column="full_name"/>
+        </collection>
+    </resultMap>
+
+    <select id="findAll" resultMap="BookClubMap">
+        SELECT
+            bc.id, bc.name,
+            r.id AS reader_id, r.full_name
+        FROM book_club bc
+                 LEFT JOIN reader r ON r.book_club_id = bc.id
+    </select>
+
+    <select id="findById" resultMap="BookClubMap" parameterType="long">
+        SELECT
+            bc.id, bc.name,
+            r.id AS reader_id, r.full_name
+        FROM book_club bc
+                 LEFT JOIN reader r ON r.book_club_id = bc.id
+        WHERE bc.id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="org.bookclub.entity.BookClub" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO book_club (name)
+        VALUES (#{name})
+    </insert>
+
+    <update id="addReaderToBookClub">
+        UPDATE reader
+        SET book_club_id = #{bookClubId}
+        WHERE id = #{readerId}
+    </update>
+
+</mapper>
