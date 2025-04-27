@@ -48,7 +48,7 @@
         <if test="bookClub == null">null</if>)
     </insert>
 
-    <insert id="addReaderToBook">
+    <insert id="addBookToReader">
         INSERT INTO reader_books (reader_id, book_id)
         VALUES (#{readerId}, #{bookId})
     </insert>

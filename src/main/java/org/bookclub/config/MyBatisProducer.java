@@ -60,24 +60,21 @@ public class MyBatisProducer {
         }
     }
 
-//    @Produces
-//    @ApplicationScoped
-//    public ReaderMapper produceReaderMapper(SqlSessionFactory sessionFactory) {
-//        // Create a session from the SqlSessionFactory
-//        return sessionFactory.openSession().getMapper(ReaderMapper.class);
-//    }
-//
-//    @Produces
-//    @ApplicationScoped
-//    public BookMapper produceBookMapper(SqlSessionFactory sessionFactory) {
-//        // Create a session from the SqlSessionFactory
-//        return sessionFactory.openSession().getMapper(BookMapper.class);
-//    }
-//
-//    @Produces
-//    @ApplicationScoped
-//    public BookClubMapper produceBookClubMapper(SqlSessionFactory sessionFactory) {
-//        // Create a session from the SqlSessionFactory
-//        return sessionFactory.openSession().getMapper(BookClubMapper.class);
-//    }
+    @Produces
+    @ApplicationScoped
+    public ReaderMapper produceReaderMapper(SqlSessionFactory sessionFactory) {
+        return sessionFactory.openSession().getMapper(ReaderMapper.class);
+    }
+
+    @Produces
+    @ApplicationScoped
+    public BookMapper produceBookMapper(SqlSessionFactory sessionFactory) {
+        return sessionFactory.openSession().getMapper(BookMapper.class);
+    }
+
+    @Produces
+    @ApplicationScoped
+    public BookClubMapper produceBookClubMapper(SqlSessionFactory sessionFactory) {
+        return sessionFactory.openSession().getMapper(BookClubMapper.class);
+    }
 }
