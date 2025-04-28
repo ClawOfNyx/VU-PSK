@@ -18,23 +18,23 @@
         SELECT
             b.id, b.title, b.author,
             r.id AS reader_id, r.full_name
-        FROM book b
-                 LEFT JOIN reader_books rb ON b.id = rb.book_id
-                 LEFT JOIN reader r ON rb.reader_id = r.id
+        FROM books b
+        LEFT JOIN reader_books rb ON b.id = rb.book_id
+        LEFT JOIN readers r ON rb.reader_id = r.id
     </select>
 
     <select id="findById" resultMap="BookMap" parameterType="long">
         SELECT
             b.id, b.title, b.author,
             r.id AS reader_id, r.full_name
-        FROM book b
-                 LEFT JOIN reader_books rb ON b.id = rb.book_id
-                 LEFT JOIN reader r ON rb.reader_id = r.id
+        FROM books b
+        LEFT JOIN reader_books rb ON b.id = rb.book_id
+        LEFT JOIN readers r ON rb.reader_id = r.id
         WHERE b.id = #{id}
     </select>
 
     <insert id="insert" parameterType="org.bookclub.entity.Book" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO book (title, author)
+        INSERT INTO books (title, author)
         VALUES (#{title}, #{author})
     </insert>
 

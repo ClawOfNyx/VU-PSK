@@ -23,10 +23,10 @@
             r.id, r.full_name,
             bc.id AS book_club_id, bc.name AS book_club_name,
             b.id AS book_id, b.title AS book_title, b.author AS book_author
-        FROM reader r
-                 LEFT JOIN book_club bc ON r.book_club_id = bc.id
-                 LEFT JOIN reader_books rb ON r.id = rb.reader_id
-                 LEFT JOIN book b ON rb.book_id = b.id
+        FROM readers r
+        LEFT JOIN book_clubs bc ON r.book_club_id = bc.id
+        LEFT JOIN reader_books rb ON r.id = rb.reader_id
+        LEFT JOIN books b ON rb.book_id = b.id
     </select>
 
     <select id="findById" resultMap="ReaderMap" parameterType="long">
@@ -34,15 +34,15 @@
             r.id, r.full_name,
             bc.id AS book_club_id, bc.name AS book_club_name,
             b.id AS book_id, b.title AS book_title, b.author AS book_author
-        FROM reader r
-                 LEFT JOIN book_club bc ON r.book_club_id = bc.id
-                 LEFT JOIN reader_books rb ON r.id = rb.reader_id
-                 LEFT JOIN book b ON rb.book_id = b.id
+        FROM readers r
+        LEFT JOIN book_clubs bc ON r.book_club_id = bc.id
+        LEFT JOIN reader_books rb ON r.id = rb.reader_id
+        LEFT JOIN books b ON rb.book_id = b.id
         WHERE r.id = #{id}
     </select>
 
     <insert id="insert" parameterType="org.bookclub.entity.Reader" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO reader (full_name, book_club_id)
+        INSERT INTO readers (full_name, book_club_id)
         VALUES (#{fullName},
         <if test="bookClub != null">#{bookClub.id}</if>
         <if test="bookClub == null">null</if>)
@@ -54,7 +54,7 @@
     </insert>
 
     <update id="updateBookClub">
-        UPDATE reader
+        UPDATE readers
         SET book_club_id = #{bookClubId}
         WHERE id = #{readerId}
     </update>

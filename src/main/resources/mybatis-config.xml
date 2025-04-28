@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias type="org.bookclub.entity.Book" alias="Book"/>
+        <typeAlias type="org.bookclub.entity.BookClub" alias="BookClub"/>
+        <typeAlias type="org.bookclub.entity.Reader" alias="Reader"/>
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="MANAGED"/>
+            <dataSource type="JNDI">
+                <property name="data_source" value="java:jboss/datasources/BookClubDS"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="org/bookclub/mybatis/BookMapper.xml"/>
+        <mapper resource="org/bookclub/mybatis/BookClubMapper.xml"/>
+        <mapper resource="org/bookclub/mybatis/ReaderMapper.xml"/>
+    </mappers>
+</configuration>

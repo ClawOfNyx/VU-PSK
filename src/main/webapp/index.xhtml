@@ -37,18 +37,8 @@
 
                         <div class="ui-fluid p-formgrid p-grid">
                             <div class="p-field p-col-12 p-md-4">
-                                <p:outputLabel for="firstName" value="First Name"/>
-                                <p:inputText id="firstName" value="#{readerBean.newReader.firstName}" required="true"/>
-                            </div>
-
-                            <div class="p-field p-col-12 p-md-4">
-                                <p:outputLabel for="lastName" value="Last Name"/>
-                                <p:inputText id="lastName" value="#{readerBean.newReader.lastName}" required="true"/>
-                            </div>
-
-                            <div class="p-field p-col-12 p-md-4">
-                                <p:outputLabel for="email" value="Email"/>
-                                <p:inputText id="email" value="#{readerBean.newReader.email}" required="true"/>
+                                <p:outputLabel for="fullName" value="Full Name"/>
+                                <p:inputText id="fullName" value="#{readerBean.newReader.fullName}" required="true"/>
                             </div>
 
                             <!-- Add Book Club selection for new readers -->
@@ -85,16 +75,8 @@
                             <h:outputText value="#{reader.id}" />
                         </p:column>
 
-                        <p:column headerText="First Name">
-                            <h:outputText value="#{reader.firstName}" />
-                        </p:column>
-
-                        <p:column headerText="Last Name">
-                            <h:outputText value="#{reader.lastName}" />
-                        </p:column>
-
-                        <p:column headerText="Email">
-                            <h:outputText value="#{reader.email}" />
+                        <p:column headerText="Full Name">
+                            <h:outputText value="#{reader.fullName}" />
                         </p:column>
 
                         <p:column headerText="Books">
@@ -117,7 +99,7 @@
 
                         <p:panelGrid columns="3" styleClass="ui-noborder">
                             <h:outputText value="Selected Reader:" />
-                            <h:outputText value="#{readerBean.selectedReader.firstName} #{readerBean.selectedReader.lastName}"
+                            <h:outputText value="#{readerBean.selectedReader.fullName}"
                                           style="font-weight: bold"/>
                             <h:outputText value="" />
 
@@ -126,7 +108,7 @@
                                 <f:selectItem itemLabel="Select Book Club" itemValue="#{null}" />
                                 <f:selectItems value="#{readerBean.availableBookClubs}" var="club"
                                                itemLabel="#{club.name}" itemValue="#{club.id}" />
-                                <p:ajax event="change" update="assignBookClubBtn" />
+                                <p:ajax event="change" update="assignBookClubBtn selectedIdsPanel" />
                             </p:selectOneMenu>
                             <p:commandButton id="assignBookClubBtn" value="Assign to Book Club"
                                              action="#{readerBean.addReaderToBookClub()}"
@@ -139,16 +121,16 @@
                                 <f:selectItem itemLabel="Select Book" itemValue="#{null}" />
                                 <f:selectItems value="#{readerBean.availableBooks}" var="book"
                                                itemLabel="#{book.title}" itemValue="#{book.id}" />
-                                <p:ajax event="change" update="assignBookBtn" />
+                                <p:ajax event="change" update="assignBookBtn selectedIdsPanel" />
                             </p:selectOneMenu>
                             <p:commandButton id="assignBookBtn" value="Assign Book"
-                                             action="#{readerBean.addReaderToBook()}"
+                                             action="#{readerBean.addBookToReader()}"
                                              update="readerTable assignmentPanel messages"
                                              process="bookMenu @this"
                                              disabled="#{readerBean.selectedBookId == null}"/>
                         </p:panelGrid>
 
-                        <p:outputPanel style="margin-top: 10px">
+                        <p:outputPanel id="selectedIdsPanel" style="margin-top: 10px">
                             <h:outputText value="Selected Book Club ID: #{readerBean.selectedBookClubId}" />
                             <br/>
                             <h:outputText value="Selected Book ID: #{readerBean.selectedBookId}" />
@@ -164,13 +146,17 @@
 
                         <p:panelGrid columns="2" styleClass="ui-noborder">
                             <h:outputText value="Generated Name:" style="font-weight:bold"/>
-                            <h:outputText value="#{nameGeneratorComponent.generateName()}" />
+                            <h:outputText value="#{nameGeneratorComponent.generatedName}" />
 
                             <h:outputText value="RequestScoped Component Info:" style="font-weight:bold"/>
                             <h:outputText value="#{nameGeneratorComponent.componentInfo}" style="color: blue;"/>
 
                             <h:outputText value="ApplicationScoped Service Info:" style="font-weight:bold"/>
                             <h:outputText value="#{nameGeneratorComponent.randomizerInfo}" style="color: green;"/>
+
+                            <h:outputText value="SessionScoped Component Info:" style="font-weight:bold"/>
+                            <h:outputText value="#{sessionDataComponent.sessionInfo}" style="color: darkorange;"/>
+                            <h:outputText value="#{sessionDataComponent.sessionGeneratedName}" style="color: darkorange;"/>
                         </p:panelGrid>
 
                         <p:commandButton value="Refresh Page (New Request)" action="index?faces-redirect=true"

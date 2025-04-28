@@ -1,9 +1,5 @@
 package org.bookclub.config;
 
-import org.bookclub.mybatis.BookClubMapper;
-import org.bookclub.mybatis.BookMapper;
-import org.bookclub.mybatis.ReaderMapper;
-
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -18,8 +14,8 @@ import org.mybatis.cdi.SessionFactoryProvider;
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
-
 import javax.sql.DataSource;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,37 +40,14 @@ public class MyBatisProducer {
             configuration.getTypeAliasRegistry().registerAlias("BookClub", org.bookclub.entity.BookClub.class);
             configuration.getTypeAliasRegistry().registerAlias("Reader", org.bookclub.entity.Reader.class);
 
-//            configuration.addMappers("org.bookclub.mybatis");
-            configuration.addMapper(ReaderMapper.class);
-            configuration.addMapper(BookClubMapper.class);
-            configuration.addMapper(BookMapper.class);
-
+            // Add XML mappers
+            configuration.addMappers("org.bookclub.mybatis");
 
             logger.info("MyBatis SqlSessionFactory created successfully.");
-
             return new SqlSessionFactoryBuilder().build(configuration);
         } catch (Exception e) {
-            // Handle any exceptions that might occur during the factory creation
             logger.log(Level.SEVERE, "Error creating MyBatis SqlSessionFactory", e);
             throw new RuntimeException("Error creating MyBatis SqlSessionFactory", e);
         }
-    }
-
-    @Produces
-    @ApplicationScoped
-    public ReaderMapper produceReaderMapper(SqlSessionFactory sessionFactory) {
-        return sessionFactory.openSession().getMapper(ReaderMapper.class);
-    }
-
-    @Produces
-    @ApplicationScoped
-    public BookMapper produceBookMapper(SqlSessionFactory sessionFactory) {
-        return sessionFactory.openSession().getMapper(BookMapper.class);
-    }
-
-    @Produces
-    @ApplicationScoped
-    public BookClubMapper produceBookClubMapper(SqlSessionFactory sessionFactory) {
-        return sessionFactory.openSession().getMapper(BookClubMapper.class);
     }
 }

@@ -18,9 +18,9 @@
         <!-- Navigation Menu -->
         <div class="menu-container">
             <p:menubar>
-                <p:menuitem value="Readers" url="readers.xhtml" icon="pi pi-user"/>
-                <p:menuitem value="Books" url="books.xhtml" icon="pi pi-book"/>
+                <p:menuitem value="Readers" url="index.xhtml" icon="pi pi-user"/>
                 <p:menuitem value="Book Clubs" url="bookclubs.xhtml" icon="pi pi-users"/>
+                <p:menuitem value="Books" url="books.xhtml" icon="pi pi-book"/>
             </p:menubar>
         </div>
 
@@ -34,11 +34,6 @@
                     <div class="p-field p-col-12 p-md-6">
                         <p:outputLabel for="name" value="Book Club Name"/>
                         <p:inputText id="name" value="#{bookClubBean.newBookClub.name}" required="true"/>
-                    </div>
-
-                    <div class="p-field p-col-12 p-md-6">
-                        <p:outputLabel for="description" value="Description"/>
-                        <p:inputTextarea id="description" value="#{bookClubBean.newBookClub.description}"/>
                     </div>
                 </div>
 
@@ -73,10 +68,6 @@
 
                 <p:column headerText="Name">
                     <h:outputText value="#{bookClub.name}" />
-                </p:column>
-
-                <p:column headerText="Description">
-                    <h:outputText value="#{bookClub.description}" />
                 </p:column>
 
                 <p:column headerText="Readers Count">

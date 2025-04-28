@@ -18,7 +18,7 @@
         <!-- Navigation Menu -->
         <div class="menu-container">
             <p:menubar>
-                <p:menuitem value="Readers" url="readers.xhtml" icon="pi pi-user"/>
+                <p:menuitem value="Readers" url="index.xhtml" icon="pi pi-user"/>
                 <p:menuitem value="Book Clubs" url="bookclubs.xhtml" icon="pi pi-users"/>
                 <p:menuitem value="Books" url="books.xhtml" icon="pi pi-book"/>
             </p:menubar>
@@ -37,14 +37,8 @@
                     </div>
 
                     <div class="p-field p-col-12 p-md-4">
-                        <p:outputLabel for="isbn" value="ISBN"/>
-                        <p:inputText id="isbn" value="#{bookBean.newBook.isbn}" required="true"/>
-                    </div>
-
-                    <div class="p-field p-col-12 p-md-4">
-                        <p:outputLabel for="pages" value="Pages"/>
-                        <p:inputNumber id="pages" value="#{bookBean.newBook.pages}" required="true"
-                                       minValue="1" maxValue="5000"/>
+                        <p:outputLabel for="author" value="Book Author"/>
+                        <p:inputText id="author" value="#{bookBean.newBook.author}" required="true"/>
                     </div>
                 </div>
 
@@ -67,7 +61,7 @@
 
                 <p:ajax event="rowSelect" listener="#{bookBean.selectBook}"
                         update=":bookDataForm:readersTable :bookDataForm:bookDebug"
-                        process="@this"/>
+                        process="@this" oncomplete="console.log('Selection complete')"/>
 
                 <f:facet name="header">
                     Books List
@@ -81,12 +75,8 @@
                     <h:outputText value="#{book.title}" />
                 </p:column>
 
-                <p:column headerText="ISBN">
-                    <h:outputText value="#{book.isbn}" />
-                </p:column>
-
-                <p:column headerText="Pages">
-                    <h:outputText value="#{book.pages}" />
+                <p:column headerText="Author">
+                    <h:outputText value="#{book.author}" />
                 </p:column>
 
                 <p:column headerText="Readers Count">

@@ -17,26 +17,26 @@
         SELECT
             bc.id, bc.name,
             r.id AS reader_id, r.full_name
-        FROM book_club bc
-                 LEFT JOIN reader r ON r.book_club_id = bc.id
+        FROM book_clubs bc
+        LEFT JOIN readers r ON r.book_club_id = bc.id
     </select>
 
     <select id="findById" resultMap="BookClubMap" parameterType="long">
         SELECT
             bc.id, bc.name,
             r.id AS reader_id, r.full_name
-        FROM book_club bc
-                 LEFT JOIN reader r ON r.book_club_id = bc.id
+        FROM book_clubs bc
+        LEFT JOIN readers r ON r.book_club_id = bc.id
         WHERE bc.id = #{id}
     </select>
 
     <insert id="insert" parameterType="org.bookclub.entity.BookClub" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO book_club (name)
+        INSERT INTO book_clubs (name)
         VALUES (#{name})
     </insert>
 
     <update id="addReaderToBookClub">
-        UPDATE reader
+        UPDATE readers
         SET book_club_id = #{bookClubId}
         WHERE id = #{readerId}
     </update>

@@ -6,10 +6,10 @@
     <persistence-unit name="bookClubPU" transaction-type="JTA">
         <jta-data-source>java:jboss/datasources/BookClubDS</jta-data-source>
         <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
         </properties>
     </persistence-unit>
 </persistence>
