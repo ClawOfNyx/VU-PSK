@@ -3,29 +3,31 @@ package org.bookclub.entity;
 //import jakarta.persistence.*;
 import javax.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-public class Reader {
-
+@Table(name = "readers")
+public class Reader implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "full_name", nullable = false)
     private String fullName;
 
     @ManyToOne
-    @JoinColumn(name = "book_club_id", nullable = false)
+    @JoinColumn(name = "book_club_id")
     private BookClub bookClub;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "reader_books",
             joinColumns = @JoinColumn(name = "reader_id"),
             inverseJoinColumns = @JoinColumn(name = "book_id")
     )
-    private List<Book> books = new ArrayList<>();
+    private Set<Book> books = new HashSet<>();
 
     public Reader() {
     }
@@ -58,11 +60,11 @@ public class Reader {
         this.bookClub = bookClub;
     }
 
-    public List<Book> getBooks() {
+    public Set<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(List<Book> books) {
+    public void setBooks(Set<Book> books) {
         this.books = books;
     }
 }

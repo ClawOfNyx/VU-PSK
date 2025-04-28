@@ -3,19 +3,23 @@ package org.bookclub.entity;
 //import jakarta.persistence.*;
 import javax.persistence.*;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-public class BookClub {
+@Table(name = "book_clubs")
+public class BookClub implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "bookClub", cascade = CascadeType.ALL)
-    private List<Reader> readers;
+    @OneToMany(mappedBy = "bookClub", fetch = FetchType.EAGER)
+    private Set<Reader> readers = new HashSet<>();
 
     public BookClub() {
     }
@@ -40,11 +44,11 @@ public class BookClub {
         this.name = name;
     }
 
-    public List<Reader> getReaders() {
+    public Set<Reader> getReaders() {
         return readers;
     }
 
-    public void setReaders(List<Reader> readers) {
+    public void setReaders(Set<Reader> readers) {
         this.readers = readers;
     }
 }
