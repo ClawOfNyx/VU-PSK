@@ -109,7 +109,7 @@ public class ReaderBean implements Serializable {
             }
 
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Reader enrolled in book"));
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Book added to reader"));
 
             loadReaders();
             selectedBookId = null;
@@ -125,7 +125,7 @@ public class ReaderBean implements Serializable {
             }
 
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Reader assigned to bookClub"));
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Reader assigned to book club"));
 
             loadReaders();
             selectedBookClubId = null;

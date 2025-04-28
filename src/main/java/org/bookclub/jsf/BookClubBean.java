@@ -29,7 +29,7 @@ public class BookClubBean implements Serializable {
     private List<BookClub> bookClubs;
     private BookClub selectedBookClub;
     private BookClub newBookClub = new BookClub();
-    private boolean useJpa = false;
+    private boolean useJpa = true;
 
     @PostConstruct
     public void init() {
@@ -61,17 +61,6 @@ public class BookClubBean implements Serializable {
         } else {
             this.selectedBookClub = bookClubService.getBookClubByIdMyBatis(bookClub.getId());
         }
-    }
-
-    public void toggleDataAccessMethod() {
-        useJpa = !useJpa;
-
-        loadBookClubs();
-
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO,
-                        "Data Access Changed",
-                        "Now using " + getDataAccessType()));
     }
 
     // Getters and setters

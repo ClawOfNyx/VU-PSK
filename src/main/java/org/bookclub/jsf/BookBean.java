@@ -63,17 +63,6 @@ public class BookBean implements Serializable {
         }
     }
 
-    public void toggleDataAccessMethod() {
-        useJpa = !useJpa;
-
-        loadBooks();
-
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage(FacesMessage.SEVERITY_INFO,
-                        "Data Access Changed",
-                        "Now using " + getDataAccessType()));
-    }
-
     public List<Book> getBooks() {
         return books;
     }
