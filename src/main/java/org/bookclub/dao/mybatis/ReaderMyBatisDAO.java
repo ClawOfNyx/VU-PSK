@@ -4,8 +4,6 @@ import org.bookclub.entity.Reader;
 import org.bookclub.mybatis.ReaderMapper;
 import org.mybatis.cdi.Transactional;
 
-//import jakarta.enterprise.context.ApplicationScoped;
-//import jakarta.inject.Inject;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 

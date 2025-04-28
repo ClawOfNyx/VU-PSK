@@ -4,9 +4,6 @@ import org.bookclub.entity.Reader;
 import org.bookclub.dao.jpa.ReaderJpaDAO;
 import org.bookclub.dao.mybatis.ReaderMyBatisDAO;
 
-//import jakarta.enterprise.context.RequestScoped;
-//import jakarta.inject.Inject;
-//import jakarta.transaction.Transactional;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;

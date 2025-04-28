@@ -1,7 +1,5 @@
 package org.bookclub.jsf;
 
-//import jakarta.enterprise.context.SessionScoped;
-//import jakarta.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 

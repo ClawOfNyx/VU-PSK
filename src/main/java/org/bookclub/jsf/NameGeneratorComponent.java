@@ -2,9 +2,6 @@ package org.bookclub.jsf;
 
 import org.bookclub.service.RandomizerService;
 
-//import jakarta.enterprise.context.RequestScoped;
-//import jakarta.inject.Inject;
-//import jakarta.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;

@@ -8,9 +8,6 @@ import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
 import org.mybatis.cdi.SessionFactoryProvider;
 
-//import jakarta.annotation.Resource;
-//import jakarta.enterprise.context.ApplicationScoped;
-//import jakarta.enterprise.inject.Produces;
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

@@ -4,9 +4,6 @@ import org.bookclub.entity.Book;
 import org.bookclub.mybatis.BookMapper;
 import org.mybatis.cdi.Transactional;
 
-//import jakarta.enterprise.context.ApplicationScoped;
-//import jakarta.inject.Inject;
-//import jakarta.transaction.Transactional;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.List;

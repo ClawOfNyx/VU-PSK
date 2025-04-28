@@ -7,12 +7,6 @@ import org.bookclub.service.BookService;
 import org.bookclub.entity.Reader;
 import org.bookclub.service.ReaderService;
 
-//import jakarta.annotation.PostConstruct;
-//import jakarta.faces.application.FacesMessage;
-//import jakarta.faces.context.FacesContext;
-//import jakarta.faces.view.ViewScoped;
-//import jakarta.inject.Inject;
-//import jakarta.inject.Named;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;

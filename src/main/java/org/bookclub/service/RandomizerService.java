@@ -1,7 +1,5 @@
 package org.bookclub.service;
 
-//import jakarta.enterprise.context.ApplicationScoped;
-//import jakarta.inject.Named;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import java.util.Random;

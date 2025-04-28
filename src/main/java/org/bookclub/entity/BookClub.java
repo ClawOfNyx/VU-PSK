@@ -1,6 +1,5 @@
 package org.bookclub.entity;
 
-//import jakarta.persistence.*;
 import javax.persistence.*;
 
 import java.io.Serializable;
