@@ -154,9 +154,10 @@
                             <h:outputText value="ApplicationScoped Service Info:" style="font-weight:bold"/>
                             <h:outputText value="#{nameGeneratorComponent.randomizerInfo}" style="color: green;"/>
 
+                            <h:outputText value="SessionScoped Component Name:" style="font-weight:bold"/>
+                            <h:outputText value="#{sessionDataComponent.sessionGeneratedName}" style="color: darkorange;"/>
                             <h:outputText value="SessionScoped Component Info:" style="font-weight:bold"/>
                             <h:outputText value="#{sessionDataComponent.sessionInfo}" style="color: darkorange;"/>
-                            <h:outputText value="#{sessionDataComponent.sessionGeneratedName}" style="color: darkorange;"/>
                         </p:panelGrid>
 
                         <p:commandButton value="Refresh Page (New Request)" action="index?faces-redirect=true"

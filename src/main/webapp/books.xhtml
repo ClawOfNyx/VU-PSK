@@ -61,7 +61,7 @@
 
                 <p:ajax event="rowSelect" listener="#{bookBean.selectBook}"
                         update=":bookDataForm:readersTable :bookDataForm:bookDebug"
-                        process="@this" oncomplete="console.log('Selection complete')"/>
+                        process="@this"/>
 
                 <f:facet name="header">
                     Books List
@@ -107,6 +107,10 @@
 
                 <p:column headerText="Full Name">
                     <h:outputText value="#{reader.fullName}" />
+                </p:column>
+
+                <p:column headerText="Reader's Book Club">
+                    <h:outputText value="#{reader.bookClub.name}" />
                 </p:column>
             </p:dataTable>
         </h:form>

@@ -5,19 +5,27 @@
 <mapper namespace="org.bookclub.mybatis.BookMapper">
 
     <resultMap id="BookMap" type="org.bookclub.entity.Book">
-        <id property="id" column="id"/>
-        <result property="title" column="title"/>
-        <result property="author" column="author"/>
+        <id property="id" column="book_id"/>
+        <result property="title" column="book_title"/>
+        <result property="author" column="book_author"/>
         <collection property="readers" ofType="org.bookclub.entity.Reader">
             <id property="id" column="reader_id"/>
-            <result property="fullName" column="full_name"/>
+            <result property="fullName" column="reader_full_name"/>
+            <association property="bookClub" javaType="org.bookclub.entity.BookClub">
+                <id property="id" column="book_club_id"/>
+                <result property="name" column="book_club_name"/>
+            </association>
         </collection>
     </resultMap>
 
     <select id="findAll" resultMap="BookMap">
         SELECT
-            b.id, b.title, b.author,
-            r.id AS reader_id, r.full_name
+            b.id AS book_id,
+            b.title AS book_title,
+            b.author AS book_author,
+
+            r.id AS reader_id,
+            r.full_name AS reader_full_name
         FROM books b
         LEFT JOIN reader_books rb ON b.id = rb.book_id
         LEFT JOIN readers r ON rb.reader_id = r.id
@@ -25,11 +33,20 @@
 
     <select id="findById" resultMap="BookMap" parameterType="long">
         SELECT
-            b.id, b.title, b.author,
-            r.id AS reader_id, r.full_name
+            b.id AS book_id,
+            b.title AS book_title,
+            b.author AS book_author,
+
+            r.id AS reader_id,
+            r.full_name AS reader_full_name,
+
+            bc.id AS book_club_id,
+            bc.name AS book_club_name
+
         FROM books b
-        LEFT JOIN reader_books rb ON b.id = rb.book_id
-        LEFT JOIN readers r ON rb.reader_id = r.id
+                 LEFT JOIN reader_books rb ON b.id = rb.book_id
+                 LEFT JOIN readers r ON rb.reader_id = r.id
+                 LEFT JOIN book_clubs bc ON r.book_club_id = bc.id
         WHERE b.id = #{id}
     </select>
 

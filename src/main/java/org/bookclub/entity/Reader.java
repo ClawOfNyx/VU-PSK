@@ -16,7 +16,7 @@ public class Reader implements Serializable {
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_club_id")
     private BookClub bookClub;
 
